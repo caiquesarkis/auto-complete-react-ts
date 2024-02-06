@@ -1,75 +1,91 @@
-import { useState } from "react";
-import { Option, Suggestion } from "./types";
+import { ReactElement, useState } from "react";
+import { Option } from "./types";
 import './style.css';
+import AutoCompletePortal from "./components/AutoCompletePortal";
+import AutoCompleteInput from "./components/AutoCompleteInput";
+import AutoCompleteSuggestionList from "./components/AutoCompleteSuggestionList";
 
-interface AutoCompleteProps {
+interface Customizations {
     options: Option[];
+    customFilter?: (userInput: string, options: Option[]) => Promise<Option[]>;
+    InputSlot?: () => ReactElement;
+    SuggestionSlot?: (suggestions: Option[]) => ReactElement;
 }
 
-export default function AutoComplete(props: AutoCompleteProps) {
-    const [suggestions, setSuggestions] = useState<Suggestion[]>();
+interface AutoCompleteProps {
+    customizations: Customizations;
+}
 
-    async function filterData(userInput: string, data: Option[]): Promise<Suggestion[]> {
+export default function AutoComplete({ customizations }: AutoCompleteProps) {
+    const {
+        options,
+        customFilter,
+        InputSlot,
+        SuggestionSlot,
+    } = customizations;
+
+    const [suggestions, setSuggestions] = useState<Option[]>();
+    const [userInputValue, setUserInputValue] = useState<string>('');
+    const [selectedOption, setSelectedOption] = useState<Option>();
+
+    async function filterData(userInput: string, data: Option[]): Promise<Option[]> {
         let userValue = userInput.toLowerCase();
         const result = data.filter((option) => {
             let suggestionValue = option.value.toLowerCase();
 
-
             return suggestionValue.includes(userValue);
         })
-        const suggestionsResult = result.map((option) => {
-            return {
-                ...option,
-                highlightText: userValue
-            }
-        })
-        return suggestionsResult;
+        console.log(userValue, result)
+        return result;
     }
 
     async function handleInput(e: any) {
         const userInput = e.target.value;
+        setUserInputValue(userInput);
+
         if (!userInput) {
             setSuggestions([]);
             return;
         }
 
-        const newSuggestions = await filterData(userInput, props.options);
-        setSuggestions(newSuggestions);
+        let newSuggestions: Option[];
+
+        if (customFilter) {
+            newSuggestions = await customFilter(userInput, options);
+        } else {
+            newSuggestions = await filterData(userInput, options);
+        }
+
+        if (newSuggestions) setSuggestions(newSuggestions);
+
     }
 
-    function highlightText(suggestion: Suggestion) {
-        let suggestionValue = suggestion.value.toLowerCase();
-        let suggestionHighlight = suggestion.highlightText.toLowerCase();
+    function renderSuggestions(suggestions: Option[] | undefined) {
+        if (!suggestions) return;
 
-        let firstWordIndex = suggestionValue.indexOf(suggestionHighlight);
+        if (SuggestionSlot) return (
+            <SuggestionSlot {...suggestions} />
+        )
 
-        let splittedSuggestion = [
-            suggestion.value.slice(0, firstWordIndex),
-            suggestion.value.slice(firstWordIndex, firstWordIndex + suggestion.highlightText.length),
-            suggestion.value.slice(firstWordIndex + suggestion.highlightText.length)
-        ];
-        
-        console.log(splittedSuggestion)
-        return (
-            <span>
-                {splittedSuggestion[0]}
-                <mark>{splittedSuggestion[1]}</mark>
-                {splittedSuggestion[2]}
-            </span>
-        );
+        return null;
     }
+
+    function renderInput() {
+        if (InputSlot) return (
+            <InputSlot />
+        )
+
+        return null;
+    }
+
+    function selectOptionHandler (option: Option){
+        setSelectedOption(option);
+    }
+
     return (
-        <div className="AutoCompleteContainer">
-            <input onChange={handleInput} type="text" />
-            <ul>
-                {
-                    suggestions?.map((suggestion, i) => {
-                        return <li key={i}>
-                            {highlightText(suggestion)}
-                        </li>
-                    })
-                }
-            </ul>
-        </div>
+        <AutoCompletePortal>
+            {renderInput() || <AutoCompleteInput onChange={handleInput} selectedOption={selectedOption} />}
+            {renderSuggestions(suggestions) || <AutoCompleteSuggestionList suggestions={suggestions} userInputValue={userInputValue} selectOptionHandler={selectOptionHandler}/>}
+        </AutoCompletePortal>
     )
 }

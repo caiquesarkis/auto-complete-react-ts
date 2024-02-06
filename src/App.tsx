@@ -1,4 +1,3 @@
-import React from 'react';
 import './App.css';
 import AutoComplete from './components/AutoComplete';
 import { Option } from './components/AutoComplete/types';
@@ -46,9 +45,14 @@ function App() {
             "value": "Elegant Table"
         }
     ];
+
+    const AutoCompleteCustomizations = {
+        options: options
+    }
+    
   return (
     <div className="App">
-      <AutoComplete options={options}/>
+      <AutoComplete customizations={AutoCompleteCustomizations}/>
     </div>
   );
 }
