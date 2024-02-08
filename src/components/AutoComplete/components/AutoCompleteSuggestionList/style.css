@@ -10,15 +10,13 @@
     margin: 0;
 
     border-radius: 2px;
-    border: 1px solid black;
+    border: 2px solid black;
 }
 
 .suggestion-list > li{
     width: 100%;
     cursor: pointer;
 }
-
-
 
 .suggestion-list > li:hover{
     background-color: gray;

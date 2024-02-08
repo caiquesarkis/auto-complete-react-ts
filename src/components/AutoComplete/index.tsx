@@ -1,8 +1,6 @@
-import { ReactElement, useState } from "react";
+import { CSSProperties, ReactElement, useCallback, useRef, useState } from "react";
 import { Option } from "./types";
 import './style.css';
-import AutoCompletePortal from "./components/AutoCompletePortal";
-import AutoCompleteInput from "./components/AutoCompleteInput";
 import AutoCompleteSuggestionList from "./components/AutoCompleteSuggestionList";
 
 interface Customizations {
@@ -14,9 +12,11 @@ interface Customizations {
 
 interface AutoCompleteProps {
     customizations: Customizations;
+    getValue: (option: Option | undefined) => void;
+    style?: CSSProperties;
 }
 
-export default function AutoComplete({ customizations }: AutoCompleteProps) {
+export default function AutoComplete({ customizations, getValue, style }: AutoCompleteProps) {
     const {
         options,
         customFilter,
@@ -27,6 +27,14 @@ export default function AutoComplete({ customizations }: AutoCompleteProps) {
     const [suggestions, setSuggestions] = useState<Option[]>();
     const [userInputValue, setUserInputValue] = useState<string>('');
     const [selectedOption, setSelectedOption] = useState<Option>();
+    const [isActive, setIsActive] = useState<boolean>();
+
+    const autoCompletePortalRef = useRef(null);
+
+    useCallback(() => {
+        getValue(selectedOption)
+    }, [selectedOption, getValue])
+
 
     async function filterData(userInput: string, data: Option[]): Promise<Option[]> {
         let userValue = userInput.toLowerCase();
@@ -78,14 +86,35 @@ export default function AutoComplete({ customizations }: AutoCompleteProps) {
         return null;
     }
 
-    function selectOptionHandler (option: Option){
+    function selectOptionHandler(option: Option) {
         setSelectedOption(option);
+        setUserInputValue(option.value)
+    }
+
+
+    function clearOptionHandler(e: any) {
+        setUserInputValue('')
+        setSuggestions([])
+    }
+
+    function onFocusHandler(e: any) {
+        setIsActive(true);
     }
 
     return (
-        <AutoCompletePortal>
-            {renderInput() || <AutoCompleteInput onChange={handleInput} selectedOption={selectedOption} />}
-            {renderSuggestions(suggestions) || <AutoCompleteSuggestionList suggestions={suggestions} userInputValue={userInputValue} selectOptionHandler={selectOptionHandler}/>}
-        </AutoCompletePortal>
+        <div ref={autoCompletePortalRef} className='auto-complete-portal' onFocus={onFocusHandler} >
+            {renderInput() ||
+                <div>
+                    <input onChange={handleInput} type="text" value={userInputValue} placeholder="Pesquisar" />
+                    <button className="auto-complete-clear-button" onClick={clearOptionHandler}>x</button>
+                </div>
+            }
+            {isActive ?
+
+                (renderSuggestions(suggestions) || <AutoCompleteSuggestionList suggestions={suggestions} userInputValue={userInputValue} selectOptionHandler={selectOptionHandler} />)
+                :
+                null
+            }
+        </div>
     )
 }

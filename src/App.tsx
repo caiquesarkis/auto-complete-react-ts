@@ -1,58 +1,28 @@
+import { useEffect, useState } from 'react';
 import './App.css';
 import AutoComplete from './components/AutoComplete';
 import { Option } from './components/AutoComplete/types';
+import { data } from './services/mock';
 
 function App() {
-    let options: Option[] = [
-        {
-            "id": 1,
-            "value": "Blue Bookshelf"
-        },
-        {
-            "id": 2,
-            "value": "Blue Chair"
-        },
-        {
-            "id": 3,
-            "value": "Modern Lamp"
-        },
-        {
-            "id": 4,
-            "value": "Elegant Desk"
-        },
-        {
-            "id": 5,
-            "value": "Elegant Desk"
-        },
-        {
-            "id": 6,
-            "value": "Elegant Lamp"
-        },
-        {
-            "id": 7,
-            "value": "Modern Sofa"
-        },
-        {
-            "id": 8,
-            "value": "Green Lamp"
-        },
-        {
-            "id": 9,
-            "value": "Blue Sofa"
-        },
-        {
-            "id": 10,
-            "value": "Elegant Table"
-        }
-    ];
+    let options: Option[] = data.options;
 
     const AutoCompleteCustomizations = {
         options: options
     }
+
+    const [selectedOption, setSelectedOption] = useState<Option>();
+
+
+    useEffect(()=>{
+        console.log(selectedOption)
+    },[selectedOption])
     
   return (
     <div className="App">
-      <AutoComplete customizations={AutoCompleteCustomizations}/>
+      <AutoComplete customizations={AutoCompleteCustomizations} getValue={(option)=>{
+            setSelectedOption(option)
+        }}/>
     </div>
   );
 }
