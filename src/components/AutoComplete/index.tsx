@@ -4,21 +4,20 @@ import './style.css';
 import SuggestionList from "./SuggestionList";
 
 interface Customizations {
-    options: Option[];
     customFilter?: (userInput: string, options: Option[]) => Promise<Option[]>;
     InputSlot?: () => ReactElement;
     SuggestionSlot?: (suggestions: Option[]) => ReactElement;
 }
 
 interface AutoCompleteProps {
-    customizations: Customizations;
+    customizations?: Customizations;
     getValue: (option: Option | undefined) => any;
     style?: CSSProperties;
+    options: Option[];
 }
 
-export default function AutoComplete({ customizations, getValue, style }: AutoCompleteProps) {
+export default function AutoComplete({ options, customizations={}, getValue, style }: AutoCompleteProps) {
     const {
-        options,
         customFilter,
         InputSlot,
         SuggestionSlot,
@@ -53,7 +52,7 @@ export default function AutoComplete({ customizations, getValue, style }: AutoCo
         setUserInputValue(userInput);
 
         if (!userInput) {
-            setSuggestions([]);
+            setSuggestions(options);
             return;
         }
 
@@ -96,7 +95,7 @@ export default function AutoComplete({ customizations, getValue, style }: AutoCo
 
     function clearOptionHandler(e: any) {
         setUserInputValue('')
-        setSuggestions([])
+        setSuggestions(options);
     }
 
     function onFocusHandler(e: any) {
