@@ -13,7 +13,6 @@ function App() {
 
     const [selectedOption, setSelectedOption] = useState<Option>();
 
-
     useEffect(()=>{
         console.log('Selected value updated in parent:', selectedOption)
     },[selectedOption])

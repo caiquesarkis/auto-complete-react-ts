@@ -1,6 +1,7 @@
 import './style.css';
 
 import { Option } from "../../types";
+import { SuggestionItem } from '../SuggestionItem';
 
 interface AutoCompleteSuggestionListProps {
     suggestions?: Option[];
@@ -10,26 +11,16 @@ interface AutoCompleteSuggestionListProps {
 
 export default function AutoCompleteSuggestionList({ suggestions, userInputValue, selectOptionHandler }: AutoCompleteSuggestionListProps) {
 
-    const highlightText = (suggestion: Option, userInputValue: string) => {
-        const suggestionValue = suggestion.value;
-        const regex = new RegExp(userInputValue, 'gi');
-        const highlightedValue = suggestionValue.replace(regex, (match) => `<mark>${match}</mark>`);
-        return <span dangerouslySetInnerHTML={{ __html: highlightedValue }} />;
-    };
-
     return (
         <ul className='suggestion-list'>
-            {
-                suggestions && suggestions.length > 0 ?
-                    suggestions.map((option, i) => {
-                        return <li key={i} onClick={()=> selectOptionHandler(option)}>
-                            {highlightText(option, userInputValue)}
-                        </li>
-                    }) :
-                    <li>
-                        No options
-                    </li>
-            }
+            {suggestions && suggestions.length > 0 ? (
+                suggestions.map((option, i) => (
+                    <SuggestionItem key={i} option={option} userInputValue={userInputValue} selectOptionHandler={selectOptionHandler} />
+                ))
+            ) : (
+                <SuggestionItem key={0} option={{ id: 0, value: 'No options' }} userInputValue={userInputValue} selectOptionHandler={selectOptionHandler} />
+            )}
         </ul>
-    )
+    );
+
 }

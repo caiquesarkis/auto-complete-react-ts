@@ -30,30 +30,23 @@ export default function AutoComplete({ customizations, getValue, style }: AutoCo
 
     const autoCompletePortalRef = useRef<HTMLDivElement>(null);
 
+    useEffect(() => {
+        document.addEventListener('mousedown', handleClickOutside);
+
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+        };
+    }, [autoCompletePortalRef]);
+
     async function filterData(userInput: string, data: Option[]): Promise<Option[]> {
         let userValue = userInput;
-        const regex = new RegExp(`${userValue}`, 'i'); 
+        const regex = new RegExp(`${userValue}`, 'i');
 
         const result = data.filter((option) => {
             return regex.test(option.value);
         });
         return result;
     }
-
-       useEffect(() => {
-        function handleClickOutside(e: MouseEvent) {
-            if (autoCompletePortalRef.current && !autoCompletePortalRef.current.contains(e.target as Node)) {
-                setIsActive(false);
-            }
-        }
-
-        document.addEventListener('mousedown', handleClickOutside);
-        return () => {
-            document.removeEventListener('mousedown', handleClickOutside);
-        };
-    }, [autoCompletePortalRef]);
-
-
 
     async function handleInput(e: any) {
         const userInput = e.target.value;
@@ -95,6 +88,8 @@ export default function AutoComplete({ customizations, getValue, style }: AutoCo
     }
 
     function selectOptionHandler(option: Option) {
+        if(option.value === 'No options') return;
+
         setUserInputValue(option.value)
         getValue(option)
     }
@@ -108,6 +103,12 @@ export default function AutoComplete({ customizations, getValue, style }: AutoCo
         setIsActive(true);
     }
 
+    function handleClickOutside(e: MouseEvent) {
+        if (autoCompletePortalRef.current && !autoCompletePortalRef.current.contains(e.target as Node)) {
+            setIsActive(false);
+        }
+    }
+
     return (
         <div ref={autoCompletePortalRef} className='auto-complete-portal' style={style} onFocus={onFocusHandler} >
             {renderInput() ||
@@ -116,6 +117,7 @@ export default function AutoComplete({ customizations, getValue, style }: AutoCo
                     <button className="auto-complete-clear-button" onClick={clearOptionHandler}>x</button>
                 </div>
             }
+            
             {isActive ?
 
                 (renderSuggestions(suggestions) || <AutoCompleteSuggestionList suggestions={suggestions} userInputValue={userInputValue} selectOptionHandler={selectOptionHandler} />)
