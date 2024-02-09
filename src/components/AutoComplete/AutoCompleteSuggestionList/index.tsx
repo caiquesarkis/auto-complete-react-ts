@@ -1,6 +1,6 @@
 import './style.css';
 
-import { Option } from "../../types";
+import { Option } from "../types";
 import { SuggestionItem } from '../SuggestionItem';
 
 interface AutoCompleteSuggestionListProps {

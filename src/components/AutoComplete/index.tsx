@@ -1,7 +1,7 @@
 import { CSSProperties, ReactElement, useCallback, useEffect, useRef, useState } from "react";
 import { Option } from "./types";
 import './style.css';
-import AutoCompleteSuggestionList from "./components/AutoCompleteSuggestionList";
+import AutoCompleteSuggestionList from "./AutoCompleteSuggestionList";
 
 interface Customizations {
     options: Option[];
