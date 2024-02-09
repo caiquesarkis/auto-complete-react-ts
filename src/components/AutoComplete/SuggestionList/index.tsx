@@ -3,13 +3,13 @@ import './style.css';
 import { Option } from "../types";
 import { SuggestionItem } from '../SuggestionItem';
 
-interface AutoCompleteSuggestionListProps {
+interface SuggestionListProps {
     suggestions?: Option[];
     userInputValue: string;
     selectOptionHandler: (option: Option) => void;
 }
 
-export default function AutoCompleteSuggestionList({ suggestions, userInputValue, selectOptionHandler }: AutoCompleteSuggestionListProps) {
+export default function SuggestionList({ suggestions, userInputValue, selectOptionHandler }: SuggestionListProps) {
 
     return (
         <ul className='suggestion-list'>

@@ -1,7 +1,7 @@
-import { CSSProperties, ReactElement, useCallback, useEffect, useRef, useState } from "react";
+import { CSSProperties, ReactElement, useEffect, useRef, useState } from "react";
 import { Option } from "./types";
 import './style.css';
-import AutoCompleteSuggestionList from "./AutoCompleteSuggestionList";
+import SuggestionList from "./SuggestionList";
 
 interface Customizations {
     options: Option[];
@@ -120,7 +120,7 @@ export default function AutoComplete({ customizations, getValue, style }: AutoCo
             
             {isActive ?
 
-                (renderSuggestions(suggestions) || <AutoCompleteSuggestionList suggestions={suggestions} userInputValue={userInputValue} selectOptionHandler={selectOptionHandler} />)
+                (renderSuggestions(suggestions) || <SuggestionList suggestions={suggestions} userInputValue={userInputValue} selectOptionHandler={selectOptionHandler} />)
                 :
                 null
             }
