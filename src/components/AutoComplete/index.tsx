@@ -113,7 +113,7 @@ export default function AutoComplete({ customizations, getValue, style }: AutoCo
         <div ref={autoCompletePortalRef} className='auto-complete-portal' style={style} onFocus={onFocusHandler} >
             {renderInput() ||
                 <div>
-                    <input onChange={handleInput} type="text" value={userInputValue} placeholder="Pesquisar" />
+                    <input  className="auto-complete-input" type="text" onChange={handleInput} value={userInputValue} placeholder="Pesquisar" />
                     <button className="auto-complete-clear-button" onClick={clearOptionHandler}>x</button>
                 </div>
             }
