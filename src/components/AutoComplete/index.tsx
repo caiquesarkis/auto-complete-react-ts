@@ -1,4 +1,4 @@
-import { CSSProperties, ReactElement, useCallback, useRef, useState } from "react";
+import { CSSProperties, ReactElement, useCallback, useEffect, useRef, useState } from "react";
 import { Option } from "./types";
 import './style.css';
 import AutoCompleteSuggestionList from "./components/AutoCompleteSuggestionList";
@@ -12,7 +12,7 @@ interface Customizations {
 
 interface AutoCompleteProps {
     customizations: Customizations;
-    getValue: (option: Option | undefined) => void;
+    getValue: (option: Option | undefined) => any;
     style?: CSSProperties;
 }
 
@@ -26,26 +26,34 @@ export default function AutoComplete({ customizations, getValue, style }: AutoCo
 
     const [suggestions, setSuggestions] = useState<Option[]>();
     const [userInputValue, setUserInputValue] = useState<string>('');
-    const [selectedOption, setSelectedOption] = useState<Option>();
     const [isActive, setIsActive] = useState<boolean>();
 
-    const autoCompletePortalRef = useRef(null);
-
-    useCallback(() => {
-        getValue(selectedOption)
-    }, [selectedOption, getValue])
-
+    const autoCompletePortalRef = useRef<HTMLDivElement>(null);
 
     async function filterData(userInput: string, data: Option[]): Promise<Option[]> {
-        let userValue = userInput.toLowerCase();
-        const result = data.filter((option) => {
-            let suggestionValue = option.value.toLowerCase();
+        let userValue = userInput;
+        const regex = new RegExp(`${userValue}`, 'i'); 
 
-            return suggestionValue.includes(userValue);
-        })
-        console.log(userValue, result)
+        const result = data.filter((option) => {
+            return regex.test(option.value);
+        });
         return result;
     }
+
+       useEffect(() => {
+        function handleClickOutside(e: MouseEvent) {
+            if (autoCompletePortalRef.current && !autoCompletePortalRef.current.contains(e.target as Node)) {
+                setIsActive(false);
+            }
+        }
+
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+        };
+    }, [autoCompletePortalRef]);
+
+
 
     async function handleInput(e: any) {
         const userInput = e.target.value;
@@ -87,10 +95,9 @@ export default function AutoComplete({ customizations, getValue, style }: AutoCo
     }
 
     function selectOptionHandler(option: Option) {
-        setSelectedOption(option);
         setUserInputValue(option.value)
+        getValue(option)
     }
-
 
     function clearOptionHandler(e: any) {
         setUserInputValue('')
@@ -102,7 +109,7 @@ export default function AutoComplete({ customizations, getValue, style }: AutoCo
     }
 
     return (
-        <div ref={autoCompletePortalRef} className='auto-complete-portal' onFocus={onFocusHandler} >
+        <div ref={autoCompletePortalRef} className='auto-complete-portal' style={style} onFocus={onFocusHandler} >
             {renderInput() ||
                 <div>
                     <input onChange={handleInput} type="text" value={userInputValue} placeholder="Pesquisar" />

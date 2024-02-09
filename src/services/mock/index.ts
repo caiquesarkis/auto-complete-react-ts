@@ -79,6 +79,10 @@ export const data ={
         {
             "id": 20,
             "value": "Leather Sofa"
+        },
+        {
+            "id": 21,
+            "value": "ha"
         }
     ]
 };

@@ -10,34 +10,20 @@ interface AutoCompleteSuggestionListProps {
 
 export default function AutoCompleteSuggestionList({ suggestions, userInputValue, selectOptionHandler }: AutoCompleteSuggestionListProps) {
 
-    const highlightText = (suggestion: Option) => {
-        let suggestionValue = suggestion.value.toLowerCase();
-        let suggestionHighlight = userInputValue.toLowerCase();
+    const highlightText = (suggestion: Option, userInputValue: string) => {
+        const suggestionValue = suggestion.value;
+        const regex = new RegExp(userInputValue, 'gi');
+        const highlightedValue = suggestionValue.replace(regex, (match) => `<mark>${match}</mark>`);
+        return <span dangerouslySetInnerHTML={{ __html: highlightedValue }} />;
+    };
 
-        let firstWordIndex = suggestionValue.indexOf(suggestionHighlight);
-
-        let splittedSuggestion = [
-            suggestion.value.slice(0, firstWordIndex),
-            suggestion.value.slice(firstWordIndex, firstWordIndex + userInputValue.length),
-            suggestion.value.slice(firstWordIndex + userInputValue.length)
-        ];
-
-        return (
-            <span>
-                {splittedSuggestion[0]}
-                <mark>{splittedSuggestion[1]}</mark>
-                {splittedSuggestion[2]}
-            </span>
-        );
-    }
-    
     return (
         <ul className='suggestion-list'>
             {
                 suggestions && suggestions.length > 0 ?
                     suggestions.map((option, i) => {
                         return <li key={i} onClick={()=> selectOptionHandler(option)}>
-                            {highlightText(option)}
+                            {highlightText(option, userInputValue)}
                         </li>
                     }) :
                     <li>

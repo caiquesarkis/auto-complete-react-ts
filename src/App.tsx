@@ -15,7 +15,7 @@ function App() {
 
 
     useEffect(()=>{
-        console.log(selectedOption)
+        console.log('Selected value updated in parent:', selectedOption)
     },[selectedOption])
     
   return (
