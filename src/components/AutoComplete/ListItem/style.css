@@ -1,0 +1,10 @@
+.list-item{
+    width: 100%;
+    cursor: pointer;
+}
+
+.list-item:hover{
+    background-color: gray;
+}
+
+

@@ -1,23 +1,26 @@
-import { useEffect, useState } from 'react';
 import './App.css';
-import AutoComplete from './components/AutoComplete';
 import { Option } from './components/AutoComplete/types';
 import { data } from './services/mock';
+import { AutoComplete } from './components/AutoComplete';
+
 
 function App() {
   let options: Option[] = data.options;
 
-  const [selectedOption, setSelectedOption] = useState<Option>();
-
-  useEffect(() => {
-    console.log('Selected value updated in parent:', selectedOption)
-  }, [selectedOption])
-
   return (
     <div className="App">
-      <AutoComplete options={options} getValue={(option) => {
-        setSelectedOption(option)
-      }} />
+      <AutoComplete.Root options={options}>
+        <AutoComplete.InputWrapper>
+          <AutoComplete.Input />
+        </AutoComplete.InputWrapper>
+
+        <AutoComplete.PortalWrapper>
+          <AutoComplete.PortalList>
+            <AutoComplete.ListItem />
+            <AutoComplete.ListItem />
+          </AutoComplete.PortalList>
+        </AutoComplete.PortalWrapper>
+      </AutoComplete.Root>
     </div>
   );
 }

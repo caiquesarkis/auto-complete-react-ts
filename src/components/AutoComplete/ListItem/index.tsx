@@ -1,13 +1,14 @@
 import { Option } from "../types";
+import './style.css'
 
-interface SuggestionItemProps {
-    option: Option;
-    userInputValue: string;
-    selectOptionHandler: (option: Option) => void
+interface ListItemProps {
+    option?: Option;
+    userInputValue?: string;
+    selectOptionHandler?: (option: Option) => void
 }
 
 
-export function SuggestionItem({ option, userInputValue, selectOptionHandler }: SuggestionItemProps) {
+export function ListItem({ option = { id: 0, value: "Nothing"}, userInputValue = "o", selectOptionHandler = (option: Option) => null }: ListItemProps) {
 
     const highlightText = (suggestion: Option, userInputValue: string) => {
         const suggestionValue = suggestion.value;
@@ -19,7 +20,7 @@ export function SuggestionItem({ option, userInputValue, selectOptionHandler }: 
     };
 
     return (
-        <li onClick={() => selectOptionHandler(option)}>
+        <li className="list-item" onClick={() => selectOptionHandler(option)}>
             {highlightText(option, userInputValue)}
         </li>
     )
