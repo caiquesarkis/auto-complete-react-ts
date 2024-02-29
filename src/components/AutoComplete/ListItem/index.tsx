@@ -9,8 +9,10 @@ interface ListItemProps {
 
 
 export function ListItem({ option}: ListItemProps) {
+    const {value: inputValue , setValue: setUserInputValue} = useContext(AutoCompleteContext.UserInputContext)
 
-    const highlightText = (suggestion: Option, userInputValue: string) => {
+    const highlightText = (suggestion: Option, userInputValue: string | undefined) => {
+        if(userInputValue === undefined) return <span>{suggestion.value}</span>
         const suggestionValue = suggestion.value;
         const regex = new RegExp(userInputValue, 'gi');
 
@@ -20,13 +22,10 @@ export function ListItem({ option}: ListItemProps) {
     };
 
     function selectOptionHandler(option: Option) {
-        if(option.value === 'No options') return;
-
         setUserInputValue(option.value)
     }
 
 
-    const {value: inputValue , setValue: setUserInputValue} = useContext(AutoCompleteContext.UserInputContext)
     return (
         <li className="list-item" onClick={() => selectOptionHandler(option)}>
             {highlightText(option, inputValue)}

@@ -1,5 +1,5 @@
 import AutoCompleteRoot from "./AutoCompleteRoot";
-import CustomAction from "./CustomAction";
+import ClearInputButton from "./ClearInputButton";
 import Input from "./Input";
 import InputWrapper from "./InputWrapper";
 import { ListItem } from "./ListItem";
@@ -13,5 +13,5 @@ export const AutoComplete = {
     PortalWrapper: PortalWrapper,
     PortalList: PortalList,
     ListItem: ListItem,
-    CustomAction: CustomAction
+    ClearInput: ClearInputButton
 }

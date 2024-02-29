@@ -24,12 +24,6 @@ export default function AutoCompleteRoot({ options, style, children }: AutoCompl
         };
     }, [autoCompletePortalRef]);
 
-
-    // function clearOptionHandler(e: any) {
-    //     setUserInputValue('')
-    //     setSuggestions(options);
-    // }
-
     function onFocusHandler(e: any) {
         setIsActive(true);
     }

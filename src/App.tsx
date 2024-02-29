@@ -12,13 +12,14 @@ function App() {
       <AutoComplete.Root options={options}>
         <AutoComplete.InputWrapper>
           <AutoComplete.Input />
+          <AutoComplete.ClearInput />
         </AutoComplete.InputWrapper>
 
         <AutoComplete.PortalWrapper>
           <AutoComplete.PortalList
             render={(suggestions) => {
               return suggestions.map((suggestion) => (
-                <AutoComplete.ListItem option={suggestion}/>
+                <AutoComplete.ListItem option={suggestion} />
               ));
             }}
           />

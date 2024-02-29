@@ -14,14 +14,6 @@ export default function PortalList({ render }: PortalListProps) {
     return (
         <ul className='suggestion-list'>
             {suggestions && render(suggestions)}
-
-            {/* {suggestions && suggestions.length > 0 ? (
-                suggestions.map((option, i) => (
-                    <SuggestionItem key={i} option={option} userInputValue={userInputValue} selectOptionHandler={selectOptionHandler} />
-                ))
-            ) : (
-                <SuggestionItem key={0} option={{ id: 0, value: 'No options' }} userInputValue={userInputValue} selectOptionHandler={selectOptionHandler} />
-            )} */}
         </ul>
     );
 
