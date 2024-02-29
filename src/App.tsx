@@ -18,10 +18,15 @@ function App() {
         <AutoComplete.PortalWrapper>
           <AutoComplete.PortalList
             render={(suggestions) => {
-              return suggestions.map((suggestion) => (
-                <AutoComplete.ListItem option={suggestion} />
-              ));
-            }}
+              if(suggestions.length > 0){
+                return suggestions.map((suggestion) => (
+                  <AutoComplete.ListItem option={suggestion} />
+                ));
+ 
+              }else{
+                return <AutoComplete.ListItem option = {{id: 0, value: 'No matches'}} />;
+              }
+          }}
           />
         </AutoComplete.PortalWrapper>
       </AutoComplete.Root>

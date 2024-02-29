@@ -6,11 +6,14 @@
     justify-content: left;
     align-items: start;
     width: 100%;
-    padding: 0;
-    margin: 0;
+    max-height: 248px;
+    overflow-y: auto;
 
-    border-radius: 2px;
-    border: 2px solid black;
+    padding: 0;
+    margin: 4px 0 0 0;
+    outline: 2px solid black;
+
+    border-radius: 4px;
 }
 
 .portal-list > li{

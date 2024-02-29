@@ -8,7 +8,7 @@ interface ListItemProps {
 }
 
 
-export function ListItem({ option}: ListItemProps) {
+export function ListItem({ option }: ListItemProps) {
     const {value: inputValue , setValue: setUserInputValue} = useContext(AutoCompleteContext.UserInputContext)
 
     const highlightText = (suggestion: Option, userInputValue: string | undefined) => {

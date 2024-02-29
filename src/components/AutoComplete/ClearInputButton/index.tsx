@@ -6,8 +6,8 @@ interface ClearInputButtonProps {
     text?: string;
 }
 
-export default function ClearInputButton({text}: ClearInputButtonProps) {
-    const {setValue: setUserInputValue} = useContext(AutoCompleteContext.UserInputContext)
+export default function ClearInputButton({ text }: ClearInputButtonProps) {
+    const { value: userInput, setValue: setUserInputValue } = useContext(AutoCompleteContext.UserInputContext)
     const { setValue: setSuggestions } = useContext(AutoCompleteContext.SuggestionContext)
     const options = useContext(AutoCompleteContext.OptionsContext)
 
@@ -18,6 +18,10 @@ export default function ClearInputButton({text}: ClearInputButtonProps) {
         setSuggestions(options)
     }
     return (
-        <button className="auto-complete-clear-button" onClick={clearOptionHandler}>{text || "x"}</button>
+        <>
+            {userInput !== '' &&
+                <button className="auto-complete-clear-button" onClick={clearOptionHandler}>{text || "x"}</button>
+            }
+        </>
     )
 }
