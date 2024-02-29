@@ -11,8 +11,6 @@ export default function ClearInputButton({ text }: ClearInputButtonProps) {
     const { setValue: setSuggestions } = useContext(AutoCompleteContext.SuggestionContext)
     const options = useContext(AutoCompleteContext.OptionsContext)
 
-
-
     function clearOptionHandler(e: any) {
         setUserInputValue('')
         setSuggestions(options)

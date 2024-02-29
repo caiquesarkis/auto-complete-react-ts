@@ -1,8 +1,6 @@
 import React from "react";
 import { Option } from "../types";
 
-
-
 interface UserInputContextType {
     value: string;
     setValue: (value: string) => void;
