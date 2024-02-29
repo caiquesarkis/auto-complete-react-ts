@@ -1,4 +1,4 @@
-.suggestion-list{
+.portal-list{
     position: absolute;
     list-style-type: none;
     display: flex;
@@ -13,12 +13,12 @@
     border: 2px solid black;
 }
 
-.suggestion-list > li{
+.portal-list > li{
     width: 100%;
     cursor: pointer;
 }
 
-.suggestion-list > li:hover{
+.portal-list > li:hover{
     background-color: gray;
 }
 

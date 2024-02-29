@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useRef } from "react";
 import { AutoCompleteContext } from "../Context";
 import { Option } from "../types";
+import './style.css'
 
 interface InputWrapperProps extends React.InputHTMLAttributes<HTMLInputElement> {
   userInputValue?: string;

@@ -18,6 +18,6 @@ export default function ClearInputButton({text}: ClearInputButtonProps) {
         setSuggestions(options)
     }
     return (
-        <button className="auto-complete-custom-action" onClick={clearOptionHandler}>{text || "x"}</button>
+        <button className="auto-complete-clear-button" onClick={clearOptionHandler}>{text || "x"}</button>
     )
 }

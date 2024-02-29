@@ -12,9 +12,12 @@ export default function PortalList({ render }: PortalListProps) {
     const { value: suggestions } = useContext(AutoCompleteContext.SuggestionContext)
 
     return (
-        <ul className='suggestion-list'>
-            {suggestions && render(suggestions)}
-        </ul>
-    );
-
+        <>
+            {suggestions &&
+                <ul className='portal-list'>
+                    {render(suggestions)}
+                </ul>
+            }
+        </>
+    )
 }
