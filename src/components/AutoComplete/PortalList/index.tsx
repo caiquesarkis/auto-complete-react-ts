@@ -1,20 +1,19 @@
 import './style.css';
 
 import { Option } from "../types";
+import { AutoCompleteContext } from '../Context';
+import { useContext } from 'react';
 
 interface PortalListProps {
-    suggestions?: Option[];
-    // userInputValue: string;
-    // selectOptionHandler: (option: Option) => void;
-    children?: React.ReactNode;
+    render: (suggestions: Option[]) => React.ReactNode;
 }
 
-export default function PortalList({ children }: PortalListProps) {
-    console.log("children",children)
+export default function PortalList({ render }: PortalListProps) {
+    const { value: suggestions } = useContext(AutoCompleteContext.SuggestionContext)
 
     return (
         <ul className='suggestion-list'>
-            {children}
+            {suggestions && render(suggestions)}
 
             {/* {suggestions && suggestions.length > 0 ? (
                 suggestions.map((option, i) => (

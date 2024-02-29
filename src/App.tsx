@@ -15,10 +15,13 @@ function App() {
         </AutoComplete.InputWrapper>
 
         <AutoComplete.PortalWrapper>
-          <AutoComplete.PortalList>
-            <AutoComplete.ListItem />
-            <AutoComplete.ListItem />
-          </AutoComplete.PortalList>
+          <AutoComplete.PortalList
+            render={(suggestions) => {
+              return suggestions.map((suggestion) => (
+                <AutoComplete.ListItem option={suggestion}/>
+              ));
+            }}
+          />
         </AutoComplete.PortalWrapper>
       </AutoComplete.Root>
     </div>
